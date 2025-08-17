@@ -34,7 +34,7 @@ def create_database(cursor):
     Creates the database if it does not already exist.
     Avoids SELECT/SHOW by using IF NOT EXISTS.
     """
-    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME}")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
 
 def main():
     conn = None
