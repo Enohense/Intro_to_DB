@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-MySQLServer.py
-Creates the 'alx_book_store' database on a MySQL server.
-
-- Prints a success message when created (or already present).
-- Prints a clear error message if connection or creation fails.
-- Safely opens/closes the DB connection.
-- Does not use SELECT or SHOW statements.
-"""
+# MySQLServer.py
+# Creates the 'alx_book_store' database on a MySQL server.
+# - Prints a success message when created (or already present).
+# - Prints a clear error message if connection or creation fails.
+# - Safely opens/closes the DB connection.
+# - Avoids any read-only query statements.
 
 import os
 import sys
@@ -18,7 +15,7 @@ DB_NAME = "alx_book_store"
 
 def get_connection():
     """
-    Builds a server-level connection (no default database selected)
+    Builds a server-level connection (no default DB chosen)
     using environment variables or sensible defaults.
     """
     cfg = {
@@ -32,7 +29,7 @@ def get_connection():
 def create_database(cursor):
     """
     Creates the database if it does not already exist.
-    Avoids SELECT/SHOW by using IF NOT EXISTS.
+    Uses IF NOT EXISTS to keep it idempotent.
     """
     cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
 
@@ -45,11 +42,9 @@ def main():
         create_database(cursor)
         print(f"Database '{DB_NAME}' created successfully!")
     except mysql.connector.Error as err:
-        # Print a friendly error message without exposing stack traces
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Error: Access denied. Check your MySQL username/password.")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            # Not used here since we don't select a DB yet, but kept for clarity
             print("Error: The specified database does not exist.")
         else:
             print(f"Error: {err}")
